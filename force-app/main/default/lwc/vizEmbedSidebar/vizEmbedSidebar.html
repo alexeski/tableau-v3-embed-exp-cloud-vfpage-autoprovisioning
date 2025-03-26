@@ -1,0 +1,37 @@
+<template>
+  <c-custom-toast title="" message={message} variant="info" if:true={showCustomToast} onclose={handleCloseToast}></c-custom-toast>
+  <div class="slds-grid slds-grid--frame slds-grid--vertical">
+    <!-- Header -->
+    <header class="header slds-size--1-of-1" role="banner">
+      <div class="slds-grid">
+        <!-- Sidebar Toggle Button -->
+        <div class={divClass1} onclick={handleSidebarClick}>
+          <span class="sidebar-override slds-icon__container slds-align-middle">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 52 52">
+              <path fill={svgColor} d="m46.5 14h-41c-0.8 0-1.5-0.7-1.5-1.5v-3c0-0.8 0.7-1.5 1.5-1.5h41c0.8 0 1.5 0.7 1.5 1.5v3c0 0.8-0.7 1.5-1.5 1.5z m0 14.9h-41c-0.8 0-1.5-0.7-1.5-1.5v-3c0-0.7 0.7-1.4 1.5-1.4h41c0.8 0 1.5 0.7 1.5 1.5v3c0 0.7-0.7 1.4-1.5 1.4z m0 15.1h-41c-0.8 0-1.5-0.7-1.5-1.5v-3c0-0.8 0.7-1.5 1.5-1.5h41c0.8 0 1.5 0.7 1.5 1.5v3c0 0.8-0.7 1.5-1.5 1.5z"/>
+            </svg>
+            <span class="slds-assistive-text">Toggle Menu</span>
+          </span>
+        </div>
+        <!-- Sidebar Content -->
+        <div if:true={isOpen} class="sidebar-override slds-grid slds-grow open">
+          <div class="slds-p-vertical--x-small slds-p-horizontal--medium"></div>
+        </div>
+      </div>
+    </header>
+    <!-- Stage Container -->
+    <div class="stage-container slds-grid slds-nowrap slds-size--1-of-1">
+      <!-- Stage Left - Navigation -->
+      <template if:true={isOpen}>
+        <nav class="sidebar-override stage-left slds-size--2-of-12 slds-shrink-none slds-scrollable--y slds-theme--alt-inverse slds-p-around--small open">
+          <c-viz-menu if:true={isTextVisible} onvizitem2={handleVizItem2}></c-viz-menu>
+        </nav>
+      </template>
+      <!-- Stage -->
+      <section class="stage slds-grid slds-grid--vertical slds-nowrap">
+        <div class="slds-shrink-none"></div>
+        <tableau-viz data-id="tableauViz" class="tableau-target-div" lwc:external></tableau-viz>
+      </section>
+    </div>
+  </div>
+</template>

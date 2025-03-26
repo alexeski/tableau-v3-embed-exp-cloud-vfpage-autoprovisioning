@@ -1,0 +1,46 @@
+.slds-text-heading--small {
+    color: black !important;
+}
+
+.menu-text {
+    color: black !important;
+
+}
+
+
+
+.container {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+
+    /* background-image: url('sfsites/c/file-asset/backgroundhardwoodsmoothsurface'); */
+    border: 1px rgb(168, 166, 166) solid;
+    border-radius: 5px;
+    margin:auto;
+    padding: 50px;
+    border-radius: 5px;
+}
+
+.homeButton {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+
+    /* background-image: url('sfsites/c/file-asset/backgroundhardwoodsmoothsurface'); */
+    /* background-image: url("/sfsites/assets/proto/service-group.jpg"); */
+    border: 1px rgb(168, 166, 166) solid;
+    height: 10px;
+    border-radius: 5px;
+    margin:auto;
+    padding: 50px;
+    border-radius: 5px;
+}
+
+/* .container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    flex: 0, 1, auto;
+} */

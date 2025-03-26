@@ -1,0 +1,13 @@
+.slds-notify_toast {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10000;
+}
+
+.toast-background-color {
+    background-color: #D9757F !important;
+    color: #FFFFFF !important;
+    font-weight: bold !important;
+}
+

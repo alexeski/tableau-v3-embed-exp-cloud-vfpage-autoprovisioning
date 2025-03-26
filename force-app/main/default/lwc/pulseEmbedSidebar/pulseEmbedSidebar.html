@@ -1,0 +1,62 @@
+<template>
+    <div class="slds-grid slds-grid--frame slds-grid--vertical">
+      <!-- Header -->
+      <header class="header slds-size--1-of-1" role="banner">
+        <div class="slds-grid">
+          <div class={divClass1} onclick={handleSidebarClick}>
+            <span class="sidebar-override slds-icon__container slds-align-middle">
+              <!-- <img class="slds-icon slds-icon--small" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/8005/rows.svg"
+                alt="Toggle Menu" /> -->
+  
+           
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 52 52"><path fill={svgColor} d="m46.5 14h-41c-0.8 0-1.5-0.7-1.5-1.5v-3c0-0.8 0.7-1.5 1.5-1.5h41c0.8 0 1.5 0.7 1.5 1.5v3c0 0.8-0.7 1.5-1.5 1.5z m0 14.9h-41c-0.8 0-1.5-0.7-1.5-1.5v-3c0-0.7 0.7-1.4 1.5-1.4h41c0.8 0 1.5 0.7 1.5 1.5v3c0 0.7-0.7 1.4-1.5 1.4z m0 15.1h-41c-0.8 0-1.5-0.7-1.5-1.5v-3c0-0.8 0.7-1.5 1.5-1.5h41c0.8 0 1.5 0.7 1.5 1.5v3c0 0.8-0.7 1.5-1.5 1.5z"/></svg>
+  
+        
+                
+  
+              <span class="slds-assistive-text">Toggle Menu</span>
+            </span>
+          </div>
+          <div class="sidebar-override slds-grid slds-grow">
+            <div class="slds-p-vertical--x-small slds-p-horizontal--medium">
+              <!-- <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/8005/salesforce-logo.png" style="height: 44px;"> -->
+  
+              <!-- <c-pulse-buttons onpdf={handlePDFexport} onppt={handlePPTexport} onimage={handleImageExport}
+                ondatax={handleDataExport} onwebedit={handleWebEdit} onvizmenu={handleVizMenu}
+                onvizrevert={handleVizRevert} ongohome={handleGoHome} onnewtask={handleNewTask}
+                onfilter={openFilterModal}>
+              </c-pulse-buttons> -->
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Stage Container -->
+      <div class="stage-container slds-grid slds-nowrap slds-size--1-of-1">
+        <!-- Stage Left - Navigation -->
+        <nav class={divClass2}>
+          <c-pulse-menu if:true={isTextVisible} onvizitem2={handleVizItem2}></c-pulse-menu>
+        </nav>
+        <!-- Stage -->
+        <section class="stage slds-grid slds-grid--vertical slds-nowrap">
+          <div class="slds-shrink-none">
+            <!-- <div class="slds-page-header">Page Header</div> -->
+            <!-- <c-pulse-buttons 
+                onpdf       = {handlePDFexport}
+                onppt       = {handlePPTexport}
+                onimage     = {handleImageExport}
+                ondatax     = {handleDataExport}
+                onwebedit   = {handleWebEdit}
+                onvizmenu   = {handleVizMenu}
+                onvizrevert = {handleVizRevert}
+                ongohome    = {handleGoHome}
+                onnewtask   = {handleNewTask}
+                onfilter = {openFilterModal}>
+              </c-pulse-buttons> -->
+          </div>
+          <!-- <h1>Tableau Viz Embed</h1> -->
+          <!-- <lightning-button label="Click Me" onclick={handleClick}></lightning-button> -->
+          <tableau-pulse data-id="tableauMetric" class="tableau-target-div" lwc:external></tableau-pulse>
+        </section>
+      </div>
+    </div>
+  </template>

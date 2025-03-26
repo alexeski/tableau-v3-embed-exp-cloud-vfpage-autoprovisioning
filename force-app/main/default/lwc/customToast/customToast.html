@@ -1,0 +1,13 @@
+<template>
+    <div class={toastClasses} role="alert">
+        <span class="slds-assistive-text">{variant}</span>
+        <button class="slds-button slds-button_icon slds-button_icon-small slds-toast__close" title="Navigate to Metrics" onclick={handleNavigate}>
+            <lightning-icon icon-name="utility:graph" size="small"></lightning-icon>
+        </button>
+        <p class="message-content slds-m-left_medium slds-m-right_medium">{message}</p>
+        <button class="slds-button slds-button_icon slds-button_icon-small slds-toast__close" title="Close" onclick={handleClose}>
+            <lightning-icon icon-name="utility:close" size="small"></lightning-icon>
+            <span class="slds-assistive-text">Close</span>
+        </button>
+    </div>
+</template>

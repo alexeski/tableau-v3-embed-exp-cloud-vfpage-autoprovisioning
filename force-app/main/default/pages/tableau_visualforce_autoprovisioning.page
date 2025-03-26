@@ -1,0 +1,114 @@
+<apex:page controller="CATokenGenerator">
+    <script type="module" src="https://us-west-2b.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
+    
+    <script>
+    var viz, sheet; // Declare viz and sheet globally to ensure they're accessible
+
+    document.addEventListener('DOMContentLoaded', function() {
+        initializeViz(); // Function to load and initialize the Tableau viz
+        setupEventListeners(); // Set up event listeners for buttons
+    });
+
+    function initializeViz() {
+        generateTokenAndSetupViz("SSO"); // Generate JWT token and setup viz
+    }
+
+    function setupEventListeners() {
+        var btnFilter = document.getElementById('btnFilter');
+        btnFilter.addEventListener('click', function() {
+            if (sheet) {
+                applyFilter("Claims Over Time", ["Corporate"], "Patient Class");
+            } else {
+                console.log('Sheet not initialized yet.');
+            }
+        });
+
+        var btnClearFilter = document.getElementById('btnClearFilter');
+        btnClearFilter.addEventListener('click', function() {
+            if (sheet) {
+                clearFilter("Claims Over Time", "Patient Class");
+            } else {
+                console.log('Sheet not initialized yet.');
+            }
+        });
+    }
+
+    async function applyFilter(sheetName, filterValues, filterField) {
+        var targetSheet = sheet.worksheets.find(ws => ws.name === sheetName);
+        try {
+            await targetSheet.applyFilterAsync(filterField, filterValues, "replace");
+            console.log('Filter applied successfully');
+        } catch (error) {
+            console.error('Error applying filter:', error);
+        }
+    }
+
+    function clearFilter(sheetName, filterField) {
+        var targetSheet = sheet.worksheets.find(ws => ws.name === sheetName);
+        try {
+            targetSheet.clearFilterAsync(filterField);
+            console.log('Filter cleared successfully');
+        } catch (error) {
+            console.error('Error clearing filter:', error);
+        }
+    }
+
+    function generateTokenAndSetupViz(tokenType) {
+        // Get the email of the current logged-in user
+        var userEmail = '{!$User.Username}';
+    
+        // Invoke the user provisioning method
+        Visualforce.remoting.Manager.invokeAction(
+            '{!$RemoteAction.CATokenGenerator.provisionUserAsUnlicensed}',
+            userEmail,
+            function(result, event) {
+                if (event.status) {
+                    console.log(`User ${userEmail} provisioned successfully`);
+                    // Generate JWT token and setup viz
+                    Visualforce.remoting.Manager.invokeAction(
+                        '{!$RemoteAction.CATokenGenerator.generateJWT}',
+                        tokenType,
+                        function(result, event) {
+                            if (event.status) {
+                                console.log('JWT:', result);
+                                setupTableauViz(result);
+                            } else {
+                                console.error('Error generating JWT:', event);
+                            }
+                        },
+                        { escape: false }
+                    );
+                } else {
+                    console.error('Error provisioning user:', event);
+                }
+            },
+            { escape: false }
+        );
+    }
+    
+    function setupTableauViz(token) {
+        const tableauVizElement = document.getElementById("tableauViz");
+        const srcUrl = "https://us-west-2b.online.tableau.com/t/eacloud/views/Denials/Scorecard";
+        tableauVizElement.setAttribute('src', srcUrl); // Set the source URL for the Tableau viz
+        tableauVizElement.setAttribute('token', token); // Set the JWT token
+        console.log('Tableau viz initialized with src and token');
+    
+        tableauVizElement.addEventListener('firstinteractive', (event) => { 
+            console.log('viz loaded!', event);
+            let currentViz = event.target;  // Directly use event.target which should be the viz element
+            if (currentViz && currentViz.workbook) {
+                console.log('We have a workbook:', currentViz.workbook);
+                sheet = currentViz.workbook.activeSheet;
+                console.log('Active sheet set:', sheet);
+            } else {
+                console.log('Workbook not available or viz not correctly referenced.');
+            }
+        });
+    }
+    
+
+    </script>
+    <button id="btnFilter">Apply Filter</button>
+    <button id="btnClearFilter">Clear Filter</button>
+    <tableau-viz id="tableauViz" width="100%" height="1000px" toolbar="hidden"></tableau-viz>
+</apex:page>

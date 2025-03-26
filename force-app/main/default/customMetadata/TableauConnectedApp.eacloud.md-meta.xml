@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomMetadata xmlns="http://soap.sforce.com/2006/04/metadata" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <label>eacloud</label>
+    <protected>false</protected>
+    <values>
+        <field>AdminUsername__c</field>
+        <value xsi:type="xsd:string">your-tableau-admin-username</value>
+    </values>
+    <values>
+        <field>SiteName__c</field>
+        <value xsi:type="xsd:string">your-tableau-cloud-site-name</value>
+    </values>
+    <values>
+        <field>TableauCloud__c</field>
+        <value xsi:type="xsd:string">https://<your-tableau-cloud-pod>.online.tableau.com</value>
+    </values>
+    <values>
+        <field>clientId__c</field>
+        <value xsi:type="xsd:string">your-client-id</value>
+    </values>
+    <values>
+        <field>kid__c</field>
+        <value xsi:type="xsd:string">your-secret-id</value>
+    </values>
+    <values>
+        <field>secret__c</field>
+        <value xsi:type="xsd:string">your-secret</value>
+    </values>
+</CustomMetadata>
