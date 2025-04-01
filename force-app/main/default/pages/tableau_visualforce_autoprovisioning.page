@@ -2,15 +2,15 @@
     <script type="module" src="https://us-west-2b.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js"></script>
     
     <script>
-    var viz, sheet; // Declare viz and sheet globally to ensure they're accessible
+    var viz, sheet;
 
     document.addEventListener('DOMContentLoaded', function() {
-        initializeViz(); // Function to load and initialize the Tableau viz
-        setupEventListeners(); // Set up event listeners for buttons
+        initializeViz();
+        setupEventListeners();
     });
 
     function initializeViz() {
-        generateTokenAndSetupViz("SSO"); // Generate JWT token and setup viz
+        generateTokenAndSetupViz("SSO");
     }
 
     function setupEventListeners() {
@@ -38,8 +38,10 @@
         try {
             await targetSheet.applyFilterAsync(filterField, filterValues, "replace");
             console.log('Filter applied successfully');
+            return true;
         } catch (error) {
             console.error('Error applying filter:', error);
+            return false;
         }
     }
 
@@ -48,23 +50,22 @@
         try {
             targetSheet.clearFilterAsync(filterField);
             console.log('Filter cleared successfully');
+            return true;
         } catch (error) {
             console.error('Error clearing filter:', error);
+            return false;
         }
     }
 
     function generateTokenAndSetupViz(tokenType) {
-        // Get the email of the current logged-in user
         var userEmail = '{!$User.Username}';
     
-        // Invoke the user provisioning method
         Visualforce.remoting.Manager.invokeAction(
             '{!$RemoteAction.CATokenGenerator.provisionUserAsUnlicensed}',
             userEmail,
             function(result, event) {
                 if (event.status) {
                     console.log(`User ${userEmail} provisioned successfully`);
-                    // Generate JWT token and setup viz
                     Visualforce.remoting.Manager.invokeAction(
                         '{!$RemoteAction.CATokenGenerator.generateJWT}',
                         tokenType,
@@ -89,13 +90,13 @@
     function setupTableauViz(token) {
         const tableauVizElement = document.getElementById("tableauViz");
         const srcUrl = "https://us-west-2b.online.tableau.com/t/eacloud/views/Denials/Scorecard";
-        tableauVizElement.setAttribute('src', srcUrl); // Set the source URL for the Tableau viz
-        tableauVizElement.setAttribute('token', token); // Set the JWT token
+        tableauVizElement.setAttribute('src', srcUrl);
+        tableauVizElement.setAttribute('token', token);
         console.log('Tableau viz initialized with src and token');
     
         tableauVizElement.addEventListener('firstinteractive', (event) => { 
-            console.log('viz loaded!', event);
-            let currentViz = event.target;  // Directly use event.target which should be the viz element
+            console.log('viz loaded!');
+            let currentViz = event.target;
             if (currentViz && currentViz.workbook) {
                 console.log('We have a workbook:', currentViz.workbook);
                 sheet = currentViz.workbook.activeSheet;
@@ -106,42 +107,36 @@
         });
     }
     
-    // Add the message listener to handle requests to filter the visualization
     window.addEventListener('message', function(event) {
-        // Optionally, validate the origin of the message
-        // This is important for security reasons, especially if you are using this in a production environment
-        
-        // Get the current domain of the Visualforce page
-        const vfDomain = window.location.origin;
-        console.log('VF Page Domain:', vfDomain);
-
-        if (event.origin !== vfDomain) {
-            return;
-        }
         const messageData = event.data;
         if (messageData.type === 'applyFilter') {
             const { sheetName, filterValues, filterField } = messageData;
             if (sheet) {
-                applyFilter(sheetName, filterValues, filterField);
+                applyFilter(sheetName, filterValues, filterField)
+                    .then((success) => {
+                        event.source.postMessage({
+                            type: 'filterApplied',
+                            success: success,
+                            sheetName: sheetName
+                        }, event.origin);
+                    })
+                    .catch(error => {
+                        event.source.postMessage({
+                            type: 'filterApplied',
+                            success: false,
+                            error: error.toString()
+                        }, event.origin);
+                    });
             } else {
                 console.log('Sheet not initialized yet.');
+                event.source.postMessage({
+                    type: 'filterApplied',
+                    success: false,
+                    error: 'Sheet not initialized yet'
+                }, event.origin);
             }
         }
     }, false);    
-    
-    /* To test the filter functionality by posting messages to the iframe from your own components,
-    // try the following script from your own component's scripts (or viathe Browser developer console)
-    // ps: Replace 'https://your-vf-page-domain.com' with the actual domain of your VF page
-
-    const vfWindow = document.querySelector('iframe').contentWindow;
-    vfWindow.postMessage({
-        type: 'applyFilter',
-        sheetName: 'Claims Over Time',
-        filterValues: ['Corporate'],
-        filterField: 'Patient Class'
-    }, 'https://your-vf-page-domain.com');
-    */
-
     </script>
     <button id="btnFilter">Apply Filter</button>
     <button id="btnClearFilter">Clear Filter</button>
