@@ -33,7 +33,7 @@ public with sharing class CATokenGenerator {
         List<TableauView__mdt> views = [SELECT DeveloperName, contentUrl__c, viewName__c FROM TableauView__mdt];
     
         // Log the entire list of views
-        System.debug('Views: ' + views);
+        // System.debug('Views: ' + views);
         return views;
     }
 
@@ -44,7 +44,7 @@ public with sharing class CATokenGenerator {
         List<TableauMetric__mdt> metrics = [SELECT DeveloperName, metricId__c, metricName__c FROM TableauMetric__mdt];
     
         // Log the entire list of views
-        System.debug('Metrics: ' + metrics);
+        // System.debug('Metrics: ' + metrics);
         return metrics;
     }
 
@@ -66,7 +66,7 @@ public with sharing class CATokenGenerator {
             // Query the Contact to get the Account Name
             Contact userContact = [SELECT Account.Name FROM Contact WHERE Id = :currentUser.ContactId];
             accountName = userContact.Account.Name;
-            System.debug('Account Name: ' + accountName);
+            // System.debug('Account Name: ' + accountName);
         }
 
         Map<String, String> userDetails = new Map<String, String>{
