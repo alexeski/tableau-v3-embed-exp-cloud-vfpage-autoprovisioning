@@ -106,6 +106,41 @@
         });
     }
     
+    // Add the message listener tohandle requeststo filterthe visualization
+    window.addEventListener('message', function(event) {
+        // Optionally, validate the origin of the message
+        // This is important for security reasons, especially if you are using this in a production environment
+        
+        // Get the current domain of the Visualforce page
+        const vfDomain = window.location.origin;
+        console.log('VF Page Domain:', vfDomain);
+
+        if (event.origin !== vfDomain) {
+            return;
+        }
+        const messageData = event.data;
+        if (messageData.type === 'applyFilter') {
+            const { sheetName, filterValues, filterField } = messageData;
+            if (sheet) {
+                applyFilter(sheetName, filterValues, filterField);
+            } else {
+                console.log('Sheet not initialized yet.');
+            }
+        }
+    }, false);    
+    
+    /* To test the filter functionality by posting messages to the iframe from your own components,
+    // try the following script from your own component's scripts (or viathe Browser developer console)
+    // ps: Replace 'https://your-vf-page-domain.com' with the actual domain of your VF page
+
+    const vfWindow = document.querySelector('iframe').contentWindow;
+       vfWindow.postMessage({
+           type: 'applyFilter',
+           sheetName: 'Claims Over Time',
+           filterValues: ['Corporate'],
+           filterField: 'Patient Class'
+       }, 'https://your-vf-page-domain.com');
+    */
 
     </script>
     <button id="btnFilter">Apply Filter</button>
