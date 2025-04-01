@@ -106,7 +106,7 @@
         });
     }
     
-    // Add the message listener tohandle requeststo filterthe visualization
+    // Add the message listener to handle requests to filter the visualization
     window.addEventListener('message', function(event) {
         // Optionally, validate the origin of the message
         // This is important for security reasons, especially if you are using this in a production environment
@@ -134,12 +134,12 @@
     // ps: Replace 'https://your-vf-page-domain.com' with the actual domain of your VF page
 
     const vfWindow = document.querySelector('iframe').contentWindow;
-       vfWindow.postMessage({
-           type: 'applyFilter',
-           sheetName: 'Claims Over Time',
-           filterValues: ['Corporate'],
-           filterField: 'Patient Class'
-       }, 'https://your-vf-page-domain.com');
+    vfWindow.postMessage({
+        type: 'applyFilter',
+        sheetName: 'Claims Over Time',
+        filterValues: ['Corporate'],
+        filterField: 'Patient Class'
+    }, 'https://your-vf-page-domain.com');
     */
 
     </script>
