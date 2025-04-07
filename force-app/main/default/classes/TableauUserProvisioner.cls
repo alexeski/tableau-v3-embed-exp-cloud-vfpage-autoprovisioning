@@ -7,6 +7,7 @@ public with sharing class TableauUserProvisioner {
 
     // Group name constant
     private static final String GROUP_NAME = 'Salesforce_Automated_Provisioning_Group';
+    private static final String API_VERSION = '3.25';
 
     // Static block to load config from CATokenGenerator
     static {
@@ -60,7 +61,7 @@ public with sharing class TableauUserProvisioner {
         System.debug('JWT Token: ' + jwtToken);
     
         // Set API endpoint and headers
-        String endpoint = TABLEAU_SITE_URL + '/api/3.25/auth/signin';
+        String endpoint = TABLEAU_SITE_URL + '/api/' + API_VERSION + '/auth/signin';
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST');
@@ -114,7 +115,7 @@ public with sharing class TableauUserProvisioner {
     private static Boolean checkUserExists(String userEmail) {
         System.debug('Checking if user exists: ' + userEmail);
         // Set API endpoint and headers
-        String endpoint = TABLEAU_SITE_URL + '/api/3.25/sites/' + siteId + '/users?filter=name:eq:' + userEmail;
+        String endpoint = TABLEAU_SITE_URL + '/api/' + API_VERSION + '/sites/' + siteId + '/users?filter=name:eq:' + userEmail;
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('GET');
@@ -152,7 +153,7 @@ public with sharing class TableauUserProvisioner {
     private static String getGroupId(String groupName) {
         System.debug('Getting group ID for group: ' + groupName);
         // Set API endpoint and headers
-        String endpoint = TABLEAU_SITE_URL + '/api/3.25/sites/' + siteId + '/groups?filter=name:eq:' + groupName;
+        String endpoint = TABLEAU_SITE_URL + '/api/' + API_VERSION + '/sites/' + siteId + '/groups?filter=name:eq:' + groupName;
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('GET');
@@ -190,7 +191,7 @@ public with sharing class TableauUserProvisioner {
     private static String createGroup(String groupName) {
         System.debug('Creating group: ' + groupName);
         // Set API endpoint and headers
-        String endpoint = TABLEAU_SITE_URL + '/api/3.25/sites/' + siteId + '/groups';
+        String endpoint = TABLEAU_SITE_URL + '/api/' + API_VERSION + '/sites/' + siteId + '/groups';
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST');
@@ -231,7 +232,7 @@ public with sharing class TableauUserProvisioner {
     private static void createUserAsUnlicensed(String userEmail, String groupId) {
         System.debug('Creating user as unlicensed: ' + userEmail);
         // Set API endpoint and headers
-        String endpoint = TABLEAU_SITE_URL + '/api/3.25/sites/' + siteId + '/users';
+        String endpoint = TABLEAU_SITE_URL + '/api/' + API_VERSION + '/sites/' + siteId + '/users';
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST');
@@ -277,7 +278,7 @@ public with sharing class TableauUserProvisioner {
     private static void addUserToGroup(String userId, String groupId) {
         System.debug('Adding user to group: ' + userId);
         // Set API endpoint and headers
-        String endpoint = TABLEAU_SITE_URL + '/api/3.25/sites/' + siteId + '/groups/' + groupId + '/users';
+        String endpoint = TABLEAU_SITE_URL + '/api/' + API_VERSION + '/sites/' + siteId + '/groups/' + groupId + '/users';
         Http http = new Http();
         HttpRequest request = new HttpRequest();
         request.setMethod('POST');
