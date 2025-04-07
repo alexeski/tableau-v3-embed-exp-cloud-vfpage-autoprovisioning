@@ -6,7 +6,7 @@ public with sharing class TableauUserProvisioner {
     private static String siteId;
 
     // Group name constant
-    private static final String GROUP_NAME = 'auto_provisioned_users_restapi_sfintegration';
+    private static final String GROUP_NAME = 'Salesforce_Automated_Provisioning_Group';
 
     // Static block to load config from CATokenGenerator
     static {
@@ -28,6 +28,7 @@ public with sharing class TableauUserProvisioner {
         }
     }
 
+    @future(callout=true)
     @RemoteAction
     public static void provisionUserAsUnlicensed(String userEmail) {
         System.debug('Provisioning user as unlicensed: ' + userEmail);
