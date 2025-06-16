@@ -296,7 +296,7 @@ public with sharing class TableauUserProvisioner {
         HttpResponse response = http.send(request);
     
         // Check if user is added to group successfully
-        if (response.getStatusCode() == 201) {
+        if (response.getStatusCode() == 200) {
             System.debug('User added to group successfully: ' + userId);
         } else {
             System.debug('Error adding user to group: ' + response.getBody());
